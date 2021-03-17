@@ -30,24 +30,30 @@ namespace WinSolution.Module {
         public XPCollection<EmployeeBase> Employees {
             get { return GetCollection<EmployeeBase>("Employees"); }
         }
+
+
         private XPCollection<LocalEmployee> _LocalEmployees;
-        [ModelDefault("AllowEdit", "False")]
-        public XPCollection<LocalEmployee> LocalEmployees {
-            get {
+     //   [ModelDefault("AllowEdit", "False")]
+        public XPCollection<LocalEmployee> LocalEmployees
+        {
+            get
+            {
                 if (_LocalEmployees == null)
-                    _LocalEmployees = new XPCollection<LocalEmployee>(Session,
+                    _LocalEmployees = new XPCollection<LocalEmployee>(PersistentCriteriaEvaluationBehavior.InTransaction, Session,
                         new GroupOperator(
                         new BinaryOperator(BaseObject.Fields.ObjectType.TypeName, new OperandValue(typeof(LocalEmployee).FullName), BinaryOperatorType.Equal),
                         new BinaryOperator("Department", this)));
                 return _LocalEmployees;
             }
         }
+
+
         private XPCollection<ForeignEmployee> _ForeignEmployees;
-        [ModelDefault("AllowEdit", "False")]
+       // [ModelDefault("AllowEdit", "False")]
         public XPCollection<ForeignEmployee> ForeignEmployees {
             get {
                 if (_ForeignEmployees == null)
-                    _ForeignEmployees = new XPCollection<ForeignEmployee>(Session,
+                    _ForeignEmployees = new XPCollection<ForeignEmployee>(PersistentCriteriaEvaluationBehavior.InTransaction,Session,
                         new GroupOperator(
                         new BinaryOperator(BaseObject.Fields.ObjectType.TypeName, new OperandValue(typeof(ForeignEmployee).FullName), BinaryOperatorType.Equal),
                         new BinaryOperator("Department", this)));
@@ -56,7 +62,7 @@ namespace WinSolution.Module {
         }
         protected override void OnLoaded() {
             base.OnLoaded();
-            UpdateCollections();
+           // UpdateCollections();
         }
         public void UpdateCollections() {
             LocalEmployees.Reload();
